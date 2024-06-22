@@ -1,0 +1,12 @@
+.patient-status-box {
+    display: flex;
+    font-family: arial,sans-serif;
+    font-weight: bold;
+    flex-direction: row;
+    color: white;
+    margin: 2px;
+    padding: 2px;
+}
+.emoji {
+    font-size: 54px;
+}
