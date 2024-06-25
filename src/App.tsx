@@ -5,6 +5,7 @@ import {Route, Routes} from "react-router-dom";
 import PatientNameList from "./components/PatientNameList";
 import {Login} from "./components/Login";
 import useToken from './useToken.js';
+import {PatientPage} from "./components/PatientPage";
 
 const App = () => {
     const {token, setToken} = useToken();
@@ -37,7 +38,7 @@ const App = () => {
             <Route path="/SignUp" element={<SignUp/>}/>
             <Route path="/PatientNoteForm" element={<PatientNoteForm/>}/>
             <Route path="/PatientsList" element={<PatientNameList/>}/>
-            <Route path="/patient/:id" element={<PatientNoteForm/>}/>
+            <Route path="/patient/:id" element={<PatientPage/>}/>
         </Routes>
     </div>
 };
