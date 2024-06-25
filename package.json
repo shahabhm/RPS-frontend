@@ -11,10 +11,16 @@
   },
   "dependencies": {
     "@cubejs-client/core": "^0.31.0",
+    "@react-buddy/ide-toolbox": "^2.4.0",
     "chart.js": "^4.0.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.3",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-multi-date-picker": "^4.5.2",
+    "react-router-dom": "^6.23.1",
+    "react-select": "^5.8.0",
+    "react-time-picker": "^7.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
