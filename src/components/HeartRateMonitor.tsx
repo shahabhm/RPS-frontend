@@ -22,7 +22,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const generateChartData = function (data: HeartRateData[]) {
     return {
-        labels: data.map(x => new Date(x.created_at).getMinutes()),
+        labels: data.map(x => `${new Date(x.created_at).getHours()}:${new Date(x.created_at).getMinutes()}`),
         datasets: [
             {
                 label: 'Heart Rate',
