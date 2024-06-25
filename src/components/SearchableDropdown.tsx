@@ -2,6 +2,7 @@ import Select from 'react-select';
 import {useEffect, useState} from "react";
 
 interface Props {
+    endpoint: string;
     setSelectedConditions: any;
 }
 
@@ -13,7 +14,7 @@ const SearchableDropdown = (props: Props) => {
     ]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/get_condition_names')
+        fetch(`http://localhost:3000/${props.endpoint}`)
             .then(response => {
                 // console.log(response.json())
                 return response.json()

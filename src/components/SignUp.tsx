@@ -55,7 +55,7 @@ const SignUp = () => {
             </div>
             <a> conditions: </a>
 
-            <SearchableDropdown setSelectedConditions={setConditions}/>
+            <SearchableDropdown setSelectedConditions={setConditions} endpoint={'get_condition_names'}/>
 
             <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
         </form>

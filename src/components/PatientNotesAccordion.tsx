@@ -12,11 +12,10 @@ interface Props {
 }
 
 function PatientNotesAccordion(props: Props) {
-    console.log(props)
     return (
         <Accordion>
             {
-                props.notes.map(note => <Accordion.Item eventKey={`${note.id}`}>
+                props.notes.map((note, index) => <Accordion.Item key={index} eventKey={`${note.id}`}>
                     <Accordion.Header>note {note.created_at}</Accordion.Header>
                     <Accordion.Body>
                         <p>{note.note}</p>
