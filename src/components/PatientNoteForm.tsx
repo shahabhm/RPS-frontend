@@ -1,39 +1,24 @@
 import {useEffect, useState} from 'react';
 import PatientNotesAccordion from "./PatientNotesAccordion";
-import useToken from "../useToken";
+import {postRequest} from "../requests";
 
-const PatientNoteForm = () => {
+interface Props {
+    patient_id: string;
+}
+
+const PatientNoteForm = (props: Props) => {
     const [note, setNote] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [notes, setNotes] = useState(null);
-
     useEffect(() => {
-        const token = JSON.parse(sessionStorage.getItem('token'));
-
-        fetch('http://localhost:3000/get_notes?account_id=1', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': `Bearer ${token}`
-            },
-        })
-            .then(response => {
-                console.log(response)
-                return response.json()
-            })
-            .then(json => setNotes(json))
-            .catch(error => console.error(error));
-    }, []);
+        postRequest('get_notes', {patient_id: props.patient_id}).then(json => setNotes(json)).catch(error => console.error(error));
+    }, [props.patient_id]);
     const handleSubmit = (event) => {
-        console.log(note, selectedImage)
         event.preventDefault();
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", 'http://localhost:3000/add_notes', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify({
-            account_id: 1,
+        postRequest('add_notes', {
+            patient_id: props.patient_id,
             note: note
-        }));
+        });
     };
 
     return (

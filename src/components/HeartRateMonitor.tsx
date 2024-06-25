@@ -9,8 +9,8 @@ import {
     Title,
     Tooltip,
     Legend,
-    ChartData
 } from 'chart.js';
+import {postRequest} from "../requests";
 
 interface HeartRateData {
     heart_rate: number;
@@ -36,11 +36,12 @@ const generateChartData = function (data: HeartRateData[]) {
 }
 
 interface Props {
-    heartRate: number[];
+    patient_id: string;
 
 }
 
-const getBackgroundColor = function (heartRateData: HeartRateData[]){
+const getBackgroundColor = function (heartRateData: HeartRateData[]) {
+    console.log('heartRateData', heartRateData);
     const lastHeartRate = heartRateData[heartRateData.length - 1].heart_rate;
     if (lastHeartRate < 60) {
         return 'red';
@@ -51,23 +52,26 @@ const getBackgroundColor = function (heartRateData: HeartRateData[]){
     return 'green';
 }
 
-export const HeartRateMonitor = () => {
+export const HeartRateMonitor = (props: Props) => {
     const [data, setData] = useState();
 
+
     useEffect(() => {
-        fetch('http://localhost:3000/get_heart_rates')
-            .then(response => response.json())
-            .then(json => setData(json))
-            .catch(error => console.error(error));
-    }, []);
+            postRequest('get_heart_rates', {patient_id: props.patient_id})
+                .then(json => setData(json))
+                .catch(error => console.error(error));
+        }
+        , []);
 
     const options = {}
 
     return (
-        <div style={{backgroundColor: data ? getBackgroundColor(data) : "yellow"}}>
-            <div style={{backgroundColor: 'white', margin: 20}}>
-                {data && <Line options={options} data={generateChartData(data)}></Line>}
-            </div>
+        <div>
+            {!data ? <h2> loading</h2> : <div style={{backgroundColor: getBackgroundColor(data)}}>
+                <div style={{backgroundColor: 'white', margin: 20}}>
+                    {data && <Line options={options} data={generateChartData(data)}></Line>}
+                </div>
+            </div>}
         </div>
     );
 };
