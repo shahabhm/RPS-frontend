@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import SearchableDropdown from "./SearchableDropdown";
 import {postRequest} from "../requests";
+import {PrescriptionRow} from "./PrescriptionRow";
 
 interface Props {
     patient_id: string;
@@ -32,7 +33,14 @@ export const Prescription = (props: Props) => {
             <div>
                 <h2>Prescriptions</h2>
                 <div>
-                    {prescriptions ? prescriptions.map((entry, index) => <div key={index}>{entry.prescription}</div>) :
+                    {prescriptions ?
+                        <ul className="list-group">{
+                            prescriptions.map((entry, index) => <li><PrescriptionRow patient_id={props.patient_id}
+                                                                                     prescription={entry.prescription}
+                                                                                     parentTrigger={setTrigger}
+                                                                                     index={index}/></li>)
+                        }</ul>
+                        :
                         <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </div>}
