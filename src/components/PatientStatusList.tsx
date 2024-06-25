@@ -17,9 +17,11 @@ export const PatientStatusList = () => {
 
     return (
         <ul className="list-group" style={{maxHeight: '120px'}}>
-            {data? data.map((x, index) => {
+            {data ? data.map((x, index) => {
                 return <PatientStatus key={index} status={x.status} lastUpdated={x.lastUpdated}/>
-            }) : "loading" }
+            }) : <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>}
         </ul>
     );
 };
