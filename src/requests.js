@@ -1,4 +1,5 @@
 export const postRequest = async function (endpoint, body) {
+    console.log('postRequest', endpoint, body);
     const token = JSON.parse(sessionStorage.getItem('token'));
 
     const response = await fetch(`http://localhost:3000/${endpoint}`, {
