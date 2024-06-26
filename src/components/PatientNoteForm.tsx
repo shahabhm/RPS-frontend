@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import PatientNotesAccordion from "./PatientNotesAccordion";
 import {postRequest} from "../requests";
+import Accordion from "react-bootstrap/Accordion";
 
 interface Props {
     patient_id: string;
@@ -10,15 +11,19 @@ const PatientNoteForm = (props: Props) => {
     const [note, setNote] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [notes, setNotes] = useState(null);
+    const [trigger, setTrigger] = useState(false);
     useEffect(() => {
         postRequest('get_notes', {patient_id: props.patient_id}).then(json => setNotes(json)).catch(error => console.error(error));
-    }, [props.patient_id]);
+    }, [props.patient_id, trigger]);
     const handleSubmit = (event) => {
         event.preventDefault();
         postRequest('add_notes', {
             patient_id: props.patient_id,
             note: note
         });
+        // sleep for 100 ms
+        setTimeout(() => setTrigger(!trigger), 100);
+        setTrigger(t => !t);
     };
 
     return (
@@ -56,7 +61,13 @@ const PatientNoteForm = (props: Props) => {
             </form>
             <div className={"mb-3"}>your notes:</div>
             <ul>
-                {notes ? <PatientNotesAccordion notes={notes}/> :
+                {notes ? <Accordion>
+                        {
+                            notes.map((note, index) => <PatientNotesAccordion note={note.note} id={note.id}
+                                                                              created_at={note.created_at} index={index}
+                                                                              setParentTrigger={setTrigger}/>)
+                        }
+                    </Accordion> :
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>}
