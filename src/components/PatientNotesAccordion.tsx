@@ -13,6 +13,8 @@ interface Props {
 
 function PatientNotesAccordion(props: Props) {
 
+    const isDoctor = JSON.parse(sessionStorage.getItem('role')) === "DOCTOR";
+
     const handleDelete = () => {
         postRequest('delete_notes', {
             id: props.id
@@ -28,7 +30,8 @@ function PatientNotesAccordion(props: Props) {
                     <span>{props.title}</span>
                 </div>
                 <span>{new Date(props.created_at).toUTCString()}</span>
-                <button onClick={handleDelete} type="button" className="btn-close btn-danger" aria-label="Close"></button>
+                {isDoctor&& <button onClick={handleDelete} type="button" className="btn-close btn-danger"
+                         aria-label="Close"></button>}
             </Accordion.Header>
             <Accordion.Body className="bg-light">
                 <p className="mb-0">{props.note}</p>

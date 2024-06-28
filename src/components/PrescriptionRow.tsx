@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const PrescriptionRow = (props: Props) => {
+    const isDoctor = JSON.parse(sessionStorage.getItem('role')) === "DOCTOR";
 
     const handleDelete = () => {
         console.log('delete')
@@ -21,7 +22,7 @@ export const PrescriptionRow = (props: Props) => {
     return (
         <li className={'list-group-item'}>
             {props.prescription}
-            <button onClick={handleDelete} type="button" className="btn-close" aria-label="Close"></button>
+            {isDoctor && <button onClick={handleDelete} type="button" className="btn-close" aria-label="Close"></button>}
         </li>
     );
 };

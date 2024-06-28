@@ -8,6 +8,8 @@ interface Props {
 }
 
 export const Prescription = (props: Props) => {
+    const isDoctor = JSON.parse(sessionStorage.getItem('role')) === "DOCTOR";
+
     const [prescriptions, setPrescriptions] = useState([]);
     const [newPrescriptions, setNewPrescriptions] = useState([]);
     const [trigger, setTrigger] = useState(false);
@@ -25,11 +27,12 @@ export const Prescription = (props: Props) => {
 
     return (
         <div style={{margin: '0 auto', maxWidth: '800px'}}>
-            <form onSubmit={handleSubmit} className="container">
-                <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
-
-                <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
-            </form>
+            {
+                isDoctor && <form onSubmit={handleSubmit} className="container">
+                    <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
+                    <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
+                </form>
+            }
             <div>
                 <h2>Prescriptions</h2>
                 <div>
