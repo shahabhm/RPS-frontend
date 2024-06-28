@@ -12,6 +12,7 @@ const PatientNoteForm = (props: Props) => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [notes, setNotes] = useState(null);
     const [trigger, setTrigger] = useState(false);
+    const [noteTitle, setNoteTitle] = useState('')
     useEffect(() => {
         postRequest('get_notes', {patient_id: props.patient_id}).then(json => setNotes(json)).catch(error => console.error(error));
     }, [props.patient_id, trigger]);
@@ -19,20 +20,22 @@ const PatientNoteForm = (props: Props) => {
         event.preventDefault();
         postRequest('add_notes', {
             patient_id: props.patient_id,
+            note_title: noteTitle,
             note: note
         });
-        // sleep for 100 ms
-        setTimeout(() => setTrigger(!trigger), 100);
-        setTrigger(t => !t);
+        setTimeout(() => setTrigger(t => !t), 200);
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} className="container">
+        <div className="container mt-5" style={{maxWidth: "800px"}}>
+            {/**/}
+            <form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label className="form-label">Notes:</label>
+                    <h3>Patient Notes</h3>
+                    <input type="text" className="form-control" value={noteTitle}
+                           onChange={e => setNoteTitle(e.target.value)} placeholder={"Enter subject"} required/>
                     <input type="text" className="form-control" value={note} onChange={e => setNote(e.target.value)}
-                           required/>
+                           placeholder={"Enter note"} required/>
                 </div>
 
                 <input
@@ -54,18 +57,20 @@ const PatientNoteForm = (props: Props) => {
                         />
                         <br/> <br/>
                         {/* Button to remove the selected image */}
-                        <button onClick={() => setSelectedImage(null)}>Remove</button>
+                        <button onClick={() => setSelectedImage(null)} className="btn btn-danger">Remove</button>
                     </div>
                 )}
-                <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
+                <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
-            <div className={"mb-3"}>your notes:</div>
+            <h4 className="mt-5">notes: </h4>
             <ul>
                 {notes ? <Accordion>
                         {
-                            notes.map((note, index) => <PatientNotesAccordion note={note.note} id={note.id}
+                            notes.map((note, index) => <PatientNotesAccordion note={note.note} id={note.id} key={index}
                                                                               created_at={note.created_at} index={index}
-                                                                              setParentTrigger={setTrigger}/>)
+                                                                              setParentTrigger={setTrigger}
+                                                                              sender_name={note.sender_name}
+                                                                              title={note.note_title}/>)
                         }
                     </Accordion> :
                     <div className="spinner-border text-primary" role="status">
