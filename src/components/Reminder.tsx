@@ -35,35 +35,45 @@ export const Reminder = ({patient_id}: Props) => {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} className="container">
-                <DatePicker
-                    value={reminderDate}
-                    onChange={setReminderDate}
-                    format="MM/DD/YYYY HH:mm:ss"
-                    plugins={[
-                        <TimePicker position="bottom" hideSeconds={true} format={"HH:MM"}/>,
-                        <DatePanel markFocused/>
-                    ]}
-                />
-                <input type="text" value={reminderText} onChange={textChangeHandler}/>
-                <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
-                <div>{
-                    reminders ?
-                        <ul className="list-group">{
-                            reminders.map((entry, index) => <li><ReminderRow className={"list-group-item"}
-                                                                             reminder={entry.reminder}
-                                                                             parentTrigger={setTrigger}
-                                                                             key={index}
-                                                                             date={entry.date}
-                                                                             id={entry.id}/></li>)
-                        }</ul>
-                        :
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
-                }</div>
+        <div className="container mt-5" style={{maxWidth: "800px"}}>
+            <h3>Patient Reminders</h3>
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label className="form-label">Reminder Date:</label>
+                    <DatePicker
+                        value={reminderDate}
+                        onChange={setReminderDate}
+                        format="MM/DD/YYYY HH:mm:ss"
+                        plugins={[
+                            <TimePicker position="bottom" hideSeconds={true} format={"HH:MM"}/>,
+                            <DatePanel markFocused/>
+                        ]}
+                        className="form-control"
+                    />
+                </div>
+                <div className="mb-3">
+                    <input type="text" value={reminderText} onChange={textChangeHandler} className="form-control"
+                           placeholder={"Reminder Text"}/>
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+            <div className="mt-5">
+                <h4>Reminders:</h4>
+                {reminders ?
+                    <ul className="list-group" style={{listStyleType: "none"}}>{
+                        reminders.map((entry, index) => <li><ReminderRow className={"list-group-item"}
+                                                                         reminder={entry.reminder}
+                                                                         parentTrigger={setTrigger}
+                                                                         key={index}
+                                                                         date={entry.date}
+                                                                         id={entry.id}/></li>)
+                    }</ul>
+                    :
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                }
+            </div>
         </div>
     );
 };

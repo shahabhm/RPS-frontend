@@ -3,6 +3,7 @@ import {HeartRateMonitor} from "./HeartRateMonitor";
 import {PatientOverview} from "./PatientOverview";
 import PatientNoteForm from "./PatientNoteForm";
 import {Prescription} from "./Prescription";
+import {Reminder} from "./Reminder";
 
 export const PatientPage = () => {
 
@@ -16,6 +17,7 @@ export const PatientPage = () => {
             <PatientOverview patient_id={patient_id}/>
             <PatientNoteForm patient_id={patient_id}/>
             <Prescription patient_id={patient_id}/>
+            {<Reminder patient_id={patient_id}/>}
         </div>
     );
 };
