@@ -1,6 +1,5 @@
 import {Link} from "react-router-dom";
-import SignUp from './components/SignUp';
-import PatientNoteForm from './components/PatientNoteForm';
+import RegisterPatient from './components/RegisterPatient';
 import {Route, Routes} from "react-router-dom";
 import PatientNameList from "./components/PatientNameList";
 import useToken from './useToken.js';
