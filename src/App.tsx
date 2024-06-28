@@ -6,10 +6,19 @@ import PatientNameList from "./components/PatientNameList";
 import {Login} from "./components/Login";
 import useToken from './useToken.js';
 import {PatientPage} from "./components/PatientPage";
+import {send} from "./push.js"
+import {useEffect, useState} from "react";
+import {SignupLogin} from "./components/SignupLogin";
 
 const App = () => {
     const {token, setToken} = useToken();
+    const [trigger, setTrigger] = useState(false);
     console.log('token at app', token);
+        useEffect(() => {
+        console.log('send');
+        // push notification
+        send();
+    }, [trigger]);
     if (!token) {
         return <Login setToken={setToken}/>
     }
