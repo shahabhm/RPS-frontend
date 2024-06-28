@@ -24,7 +24,7 @@ export const Prescription = (props: Props) => {
     };
 
     return (
-        <div>
+        <div style={{margin: '0 auto', maxWidth: '800px'}}>
             <form onSubmit={handleSubmit} className="container">
                 <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
 
@@ -34,11 +34,13 @@ export const Prescription = (props: Props) => {
                 <h2>Prescriptions</h2>
                 <div>
                     {prescriptions ?
-                        <ul className="list-group">{
+                        <ul className="list-group" style={{listStyleType: "none"}}>{
                             prescriptions.map((entry, index) => <li><PrescriptionRow patient_id={props.patient_id}
                                                                                      prescription={entry.prescription}
                                                                                      parentTrigger={setTrigger}
-                                                                                     index={index}/></li>)
+                                                                                     index={index}
+                                                                                     />
+                            </li>)
                         }</ul>
                         :
                         <div className="spinner-border text-primary" role="status">

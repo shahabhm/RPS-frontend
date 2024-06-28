@@ -42,14 +42,17 @@ interface Props {
 
 const getBackgroundColor = function (heartRateData: HeartRateData[]) {
     console.log('heartRateData', heartRateData);
-    const lastHeartRate = heartRateData[heartRateData.length - 1].heart_rate;
+    const lastHeartRate = heartRateData[heartRateData.length - 1]?.heart_rate;
     if (lastHeartRate < 60) {
         return 'red';
     }
     if (lastHeartRate > 100) {
         return 'red';
     }
-    return 'green';
+    if (lastHeartRate){
+        return 'green';
+    }
+    return 'blue'
 }
 
 export const HeartRateMonitor = (props: Props) => {
