@@ -4,7 +4,6 @@ import {useState} from "react";
 
 async function loginUser(credentials) {
     console.log('logging in: ', credentials);
-    // sleep for 1 second
     return fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
@@ -15,7 +14,7 @@ async function loginUser(credentials) {
         .then(data => data.json())
 }
 
-export const Login = ({ setToken }) => {
+export const Login = ({ setToken, setTrigger}) => {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     const handleSubmit = async e => {
@@ -26,6 +25,7 @@ export const Login = ({ setToken }) => {
         });
         console.log('token from backend: ', token);
         setToken(token);
+        setTrigger(t => !t);
     }
     return (
         <div className="login-wrapper">
