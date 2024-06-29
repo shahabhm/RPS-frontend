@@ -1,42 +1,18 @@
-import {useState} from "react";
-
-async function signup(credentials) {
-    console.log('signing up: ', credentials);
-    return fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}
-
-export const SignUp = ({setToken}) => {
-    const [name, setName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [phone_number, setPhone_number] = useState('');
-    const [role, setRole] = useState(false);
-
-    const handleSubmit = async (event) => {
-        console.log(name, username, phone_number, role)
-        event.preventDefault()
-        const token = await signup({
-            name: name,
-            username: username,
-            phone_number: phone_number,
-            password: password,
-            role: role ? 'DOCTOR' : 'CAREGIVER'
-        });
-        console.log('token from backend: ', token);
-        setToken(token);
-    };
-
-
+export const SignUp = ({
+                           name,
+                           setName,
+                           phone_number,
+                           setPhone_number,
+                           username,
+                           setUsername,
+                           password,
+                           setPassword,
+                           role,
+                           setRole
+                       }) => {
     return (
-        <div className={"card"}>
-            <form onSubmit={handleSubmit} className="container mt-1">
+        <div>
+            <form className="container mt-1">
                 <div className="mb-3">
                     <label className="form-label">Name:</label>
                     <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)}
@@ -61,7 +37,6 @@ export const SignUp = ({setToken}) => {
                     <input type="checkbox" id="vehicle1" name="doctor" value={role} onChange={() => setRole(r => !r)}/>
                     <label htmlFor="vehicle1">I am a doctor</label>
                 </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
         </div>
     );
