@@ -24,7 +24,7 @@ const App = () => {
     return <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <a className="navbar-brand" href="#">RPS</a>
                 <div className="" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
@@ -34,6 +34,10 @@ const App = () => {
                             <Link className="nav-link" to="/patient_list">list of patients</Link>
                         </li>
                     </ul>
+                </div>
+                <div className="avatar">
+                    <img src="public/vite.svg" alt="Avatar" />
+                    <span>{JSON.parse(sessionStorage.getItem('name')) || "Account"}</span>
                 </div>
             </div>
         </nav>

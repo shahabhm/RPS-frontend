@@ -2,6 +2,9 @@ import { useState } from 'react';
 import SearchableDropdown from "./SearchableDropdown";
 import DatePicker from "react-multi-date-picker"
 import {postRequest} from '../requests.js'
+import './RegisterPatient.css';
+import { useNavigate } from "react-router-dom";
+
 
 const RegisterPatient = () => {
     const [name, setName] = useState('');
@@ -11,6 +14,7 @@ const RegisterPatient = () => {
     const [phone_number, setPhone_number] = useState('');
     const [conditions, setConditions] = useState([]);
     const [birthdate, setBirthdate] = useState(Date())
+    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
         console.log(name, age, height, city, phone_number, conditions, birthdate)
@@ -23,13 +27,17 @@ const RegisterPatient = () => {
             phone_number: phone_number,
             conditions: conditions,
             birthdate: birthdate
-        })
+        }).then((res) => {
+            console.log('response from backend', res);
+            navigate(`/patient/${res.id}`)
+        }).catch(error => console.error(error));
     };
 
 
     return (
-        <div className={"card"}>
-            <form onSubmit={handleSubmit} className="container mt-1">
+        <div className="container">
+            <form onSubmit={handleSubmit} className="register-patient mt-1">
+                <h3>Register New Patient</h3>
                 <div className="mb-3">
                     <label className="form-label">Name:</label>
                     <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)} required />
@@ -58,7 +66,7 @@ const RegisterPatient = () => {
                     <label className="form-label">Conditions:</label>
                     <SearchableDropdown setSelectedConditions={setConditions} endpoint={'get_condition_names'} className="form-control"/>
                 </div>
-                <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
+                <button className="btn btn btn-success" type="submit">Submit</button>
             </form>
         </div>
     );
