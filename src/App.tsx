@@ -7,6 +7,7 @@ import {PatientPage} from "./components/PatientPage";
 import {send} from "./push.js"
 import {useEffect, useState} from "react";
 import {SignupLogin} from "./components/SignupLogin";
+import "./App.css";
 
 const App = () => {
     const {token, setToken} = useToken();
@@ -22,7 +23,7 @@ const App = () => {
     }
 
     return <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{  position: "sticky", top: 0}}>
             <div className="container-fluid">
                 <a className="navbar-brand" href="#">RPS</a>
                 <div className="" id="navbarNav">
