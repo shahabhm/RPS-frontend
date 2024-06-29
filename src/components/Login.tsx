@@ -1,22 +1,26 @@
 import './Login.css';
 
 export const Login = ({
-                          setUsername, setPassword
+                          setUsername, setPassword, username, password
                       }) => {
 
 
     return (
-        <div className="login-wrapper">
-            <h1>Please Log In</h1>
-            <form>
-                <label>
-                    <p>Username</p>
-                    <input type="text" onChange={e => setUsername(e.target.value)}/>
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input type="password" onChange={e => setPassword(e.target.value)}/>
-                </label>
+        <div>
+            <h3>
+                Login
+            </h3>
+            <form >
+                <div className="mb-3">
+                    <label className="form-label">username:</label>
+                    <input type="text" className="form-control" value={username}
+                           onChange={e => setUsername(e.target.value)} required/>
+                </div>
+                <div className="mb-3">
+                    <label className="form-label">Password:</label>
+                    <input type="password" className="form-control" value={password}
+                           onChange={e => setPassword(e.target.value)} required/>
+                </div>
             </form>
         </div>
     );

@@ -12,7 +12,10 @@ export const SignUp = ({
                        }) => {
     return (
         <div>
-            <form className="container mt-1">
+            <h3>
+                Sign Up
+            </h3>
+            <form >
                 <div className="mb-3">
                     <label className="form-label">Name:</label>
                     <input type="text" className="form-control" value={name} onChange={e => setName(e.target.value)}

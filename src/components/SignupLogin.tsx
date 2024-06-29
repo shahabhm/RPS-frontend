@@ -1,3 +1,4 @@
+import './SignupLogin.css';
 import {Login} from "./Login";
 import {SignUp} from "./SignUp";
 import {useState} from "react";
@@ -51,23 +52,28 @@ export const SignupLogin = ({setToken, setTrigger}) => {
     const [login, setLogin] = useState(false);
 
     return (
-        <>
-            {
-                login ? <Login setUsername={setUsername} setPassword={setPassword}/> :
-                    <SignUp password={password} setPassword={setPassword} name={name} setName={setName}
-                            username={username} setUsername={setUsername} phone_number={phone_number}
-                            setPhone_number={setPhone_number} role={role} setRole={setRole}/>
-            }
-            {
-                login ? <button onClick={handleSubmitLogin}>Login</button> :
-                    <button onClick={handleSubmitSignup}>Sign Up</button>
-            }
-            {
-                login ? <button onClick={() => setLogin(false)}>create new account</button> :
-                    <button onClick={() => setLogin(true)}>already have an account</button>
-            }
-            <div>
+        <div className="container">
+            <div className="signup-login">
+                {
+                    login ? <Login setUsername={setUsername} setPassword={setPassword} username={username} password={password}/> :
+                        <SignUp password={password} setPassword={setPassword} name={name} setName={setName}
+                                username={username} setUsername={setUsername} phone_number={phone_number}
+                                setPhone_number={setPhone_number} role={role} setRole={setRole}/>
+                }
+                <div>
+                    {
+                        login ? <button className="btn btn btn-success" onClick={handleSubmitLogin}>Login</button> :
+                            <button className="btn btn btn-success" onClick={handleSubmitSignup}>Sign Up</button>
+                    }
+                </div>
+                <div>
+                    {
+                        login ? <a className="link" onClick={() => setLogin(false)}>create new account</a> :
+                            <a className="link" onClick={() => setLogin(true)}>already have an account? login</a>
+                    }
+                </div>
+                <div>
+                </div>
             </div>
-        </>
-    );
-};
+        </div>
+    );};
