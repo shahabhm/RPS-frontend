@@ -28,10 +28,24 @@ const PatientNoteForm = (props: Props) => {
 
     return (
         <div className="container mt-5" style={{maxWidth: "800px"}}>
-            {/**/}
+            <h2 style={{textAlign: 'center', color: '#3f51b5'}}>Patient Notes</h2>
+            <ul>
+                {notes ? <Accordion>
+                        {
+                            notes.map((note, index) => <PatientNotesAccordion note={note.note} id={note.id} key={index}
+                                                                              created_at={note.created_at} index={index}
+                                                                              setParentTrigger={setTrigger}
+                                                                              sender_name={note.sender_name}
+                                                                              title={note.note_title}/>)
+                        }
+                    </Accordion> :
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>}
+            </ul>
             <form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <h3>Patient Notes</h3>
+                    <h2 style={{ textAlign: 'center', color: '#3f51b5' }}>Patient Notes</h2>
                     <input type="text" className="form-control" value={noteTitle}
                            onChange={e => setNoteTitle(e.target.value)} placeholder={"Enter subject"} required/>
                     <input type="text" className="form-control" value={note} onChange={e => setNote(e.target.value)}
@@ -62,21 +76,6 @@ const PatientNoteForm = (props: Props) => {
                 )}
                 <button type="submit" className="btn btn-primary mt-3">Submit</button>
             </form>
-            <h4 className="mt-5">notes: </h4>
-            <ul>
-                {notes ? <Accordion>
-                        {
-                            notes.map((note, index) => <PatientNotesAccordion note={note.note} id={note.id} key={index}
-                                                                              created_at={note.created_at} index={index}
-                                                                              setParentTrigger={setTrigger}
-                                                                              sender_name={note.sender_name}
-                                                                              title={note.note_title}/>)
-                        }
-                    </Accordion> :
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>}
-            </ul>
         </div>
     );
 };

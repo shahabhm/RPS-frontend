@@ -69,9 +69,10 @@ export const HeartRateMonitor = (props: Props) => {
     const options = {}
 
     return (
-        <div>
+        <div className="heart-rate-monitor">
+            <h2 style={{ textAlign: 'center', color: '#3f51b5' }}>Patient Heart rate monitor</h2>
             {!data ? <h2> loading</h2> : <div style={{backgroundColor: getBackgroundColor(data)}}>
-                <div style={{backgroundColor: 'white', margin: 20}}>
+                <div style={{backgroundColor: 'white', margin: 20, maxWidth: "400px"}}>
                     {data && <Line options={options} data={generateChartData(data)}></Line>}
                 </div>
             </div>}

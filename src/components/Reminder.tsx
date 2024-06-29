@@ -36,7 +36,23 @@ export const Reminder = ({patient_id}: Props) => {
 
     return (
         <div className="container mt-5" style={{maxWidth: "800px"}}>
-            <h3>Patient Reminders</h3>
+            <div className="mt-5">
+                <h4>Reminders:</h4>
+                {reminders ?
+                    <ul className="list-group" style={{listStyleType: "none"}}>{
+                        reminders.map((entry, index) => <li><ReminderRow className={"list-group-item"}
+                                                                         reminder={entry.reminder}
+                                                                         parentTrigger={setTrigger}
+                                                                         key={index}
+                                                                         date={entry.date}
+                                                                         id={entry.id}/></li>)
+                    }</ul>
+                    :
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                }
+            </div>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label className="form-label">Reminder Date:</label>
@@ -57,23 +73,6 @@ export const Reminder = ({patient_id}: Props) => {
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
-            <div className="mt-5">
-                <h4>Reminders:</h4>
-                {reminders ?
-                    <ul className="list-group" style={{listStyleType: "none"}}>{
-                        reminders.map((entry, index) => <li><ReminderRow className={"list-group-item"}
-                                                                         reminder={entry.reminder}
-                                                                         parentTrigger={setTrigger}
-                                                                         key={index}
-                                                                         date={entry.date}
-                                                                         id={entry.id}/></li>)
-                    }</ul>
-                    :
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </div>
-                }
-            </div>
         </div>
     );
 };

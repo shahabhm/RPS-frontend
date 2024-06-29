@@ -20,7 +20,7 @@ export const ReminderRow = ({id, reminder, date, parentTrigger}: Props) => {
     return (
         <li className="list-group-item d-flex justify-content-between align-items-center">
             <div>
-                <h3 className="mb-1">{new Date(date).toUTCString()}</h3>
+                <h4 className="mb-1">{new Date(date).toUTCString()}</h4>
                 <p className="mb-0">{reminder}</p>
             </div>
             <button onClick={handleDelete} type="button" className="btn-close" aria-label="Close"></button>

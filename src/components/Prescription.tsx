@@ -27,12 +27,6 @@ export const Prescription = (props: Props) => {
 
     return (
         <div style={{margin: '0 auto', maxWidth: '800px'}}>
-            {
-                isDoctor && <form onSubmit={handleSubmit} className="container">
-                    <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
-                    <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
-                </form>
-            }
             <div>
                 <h2>Prescriptions</h2>
                 <div>
@@ -51,6 +45,12 @@ export const Prescription = (props: Props) => {
                         </div>}
                 </div>
             </div>
+            {
+                isDoctor && <form onSubmit={handleSubmit} >
+                    <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
+                    <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
+                </form>
+            }
         </div>
     );
 };
