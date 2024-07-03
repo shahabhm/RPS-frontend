@@ -11,9 +11,10 @@ import {
     Legend,
 } from 'chart.js';
 import {postRequest} from "../requests";
+import {ParameterLimit} from "./ParameterLimit";
 
 interface HeartRateData {
-    heart_rate: number;
+    parameter: number;
     created_at: string;
     account_id: string;
 }
@@ -26,7 +27,7 @@ const generateChartData = function (data: HeartRateData[]) {
         datasets: [
             {
                 label: 'Heart Rate',
-                data: data.map(x => x.heart_rate),
+                data: data.map(x => x.value),
                 fill: false,
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 borderColor: 'rgba(75,192,192,1)',
@@ -37,31 +38,32 @@ const generateChartData = function (data: HeartRateData[]) {
 
 interface Props {
     patient_id: string;
+    parameter: string;
 
 }
 
-const getBackgroundColor = function (heartRateData: HeartRateData[]) {
-    console.log('heartRateData', heartRateData);
-    const lastHeartRate = heartRateData[heartRateData.length - 1]?.heart_rate;
-    if (lastHeartRate < 60) {
-        return 'red';
-    }
-    if (lastHeartRate > 100) {
-        return 'red';
-    }
-    if (lastHeartRate){
-        return 'green';
-    }
-    return 'blue'
-}
-
-export const HeartRateMonitor = (props: Props) => {
+export const ParameterMonitor = (props: Props) => {
     const [data, setData] = useState();
+    const [limits, setLimits] = useState();
 
+    const getBackgroundColor = function (heartRateData: HeartRateData[]) {
+        console.log('heartRateData', heartRateData);
+        const lastValue = heartRateData[heartRateData.length - 1]?.value;
+        if (!lastValue) {
+            return 'blue';
+        }
+        if (limits && (lastValue > limits.upper_limit || lastValue < limits.lower_limit)) {
+            return 'red';
+        }
+        return 'green'
+    }
 
     useEffect(() => {
-            postRequest('get_heart_rates', {patient_id: props.patient_id})
-                .then(json => setData(json))
+            postRequest('get_patient_parameter', {patient_id: props.patient_id, parameter: props.parameter})
+                .then(json => {
+                    setLimits(json?.parameter_limits);
+                    setData(json?.parameters);
+                })
                 .catch(error => console.error(error));
         }
         , []);
@@ -70,10 +72,11 @@ export const HeartRateMonitor = (props: Props) => {
 
     return (
         <div className="heart-rate-monitor">
-            <h2 style={{ textAlign: 'center', color: '#3f51b5' }}>Patient Heart rate monitor</h2>
+            <h2 style={{textAlign: 'center', color: '#3f51b5'}}>{props.parameter.replace("_", " ").toLowerCase()}</h2>
             {!data ? <h2> loading</h2> : <div style={{backgroundColor: getBackgroundColor(data)}}>
-                <div style={{backgroundColor: 'white', margin: 20, maxWidth: "400px"}}>
+                <div style={{backgroundColor: 'white', margin: 20, maxWidth: "800px"}}>
                     {data && <Line options={options} data={generateChartData(data)}></Line>}
+                    <ParameterLimit patient_id={props.patient_id} parameter={props.parameter} limits={limits}/>
                 </div>
             </div>}
         </div>
