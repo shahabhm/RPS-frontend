@@ -4,6 +4,8 @@ import {useEffect, useState} from "react";
 interface Props {
     endpoint: string;
     setSelectedConditions: any;
+    isSingle: boolean;
+    placeholder: string;
 }
 
 const SearchableDropdown = (props: Props) => {
@@ -31,8 +33,9 @@ const SearchableDropdown = (props: Props) => {
     return (
         <Select
             options={options}
-            isMulti
+            isMulti={!props.isSingle}
             onChange={handleChange}
+            placeholder={props.placeholder || "Select"}
         />
     );
 };
