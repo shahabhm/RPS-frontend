@@ -1,12 +1,18 @@
 import {useEffect, useState} from "react";
 import {postRequest} from "../requests";
 import {Link} from "react-router-dom";
+import {send} from "../push";
 
 const PatientNameList = () => {
 
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [searchVal, setSearchVal] = useState("");
+
+    useEffect(() => {
+        console.log('send');
+        send();
+    }, []);
 
     function handleSearchClick(event) {
         setSearchVal(event.target.value)
