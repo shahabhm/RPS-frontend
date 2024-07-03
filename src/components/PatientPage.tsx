@@ -13,7 +13,7 @@ export const PatientPage = () => {
 
     const {id} = useParams();
     const patient_id = id;
-    const [parametersTrigger, setParametersTrigger] = useState(false);
+    const [parametersTrigger, setParametersTrigger] = useState(1);
 
     return (
         <div className="patient-page">
@@ -24,9 +24,9 @@ export const PatientPage = () => {
                 alignItems: 'flex-start',
             }}>
                 <div>
-                    <ParametersMonitorList patient_id={patient_id}/>
+                    <ParametersMonitorList patient_id={patient_id} trigger={parametersTrigger}/>
                     <hr/>
-                    <ParameterInput trigger={parametersTrigger} patient_id={patient_id}/>
+                    <ParameterInput trigger={setParametersTrigger} patient_id={patient_id}/>
                 </div>
                 <div>
                     <PatientOverview patient_id={patient_id}/>

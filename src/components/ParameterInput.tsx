@@ -19,8 +19,11 @@ export const ParameterInput = ({patient_id, trigger}) => {
             parameter: parameter.value,
             value
         }).then(() => {
-            setTimeout(() => trigger(t => !t), 200)
-        }).catch(error => console.error(error));
+            setTimeout(() => trigger(t => t + 1), 200)
+        }).catch(error => {
+            console.error(error);
+            setTimeout(() => trigger(t => t + 1), 200)
+        });
     }
 
 

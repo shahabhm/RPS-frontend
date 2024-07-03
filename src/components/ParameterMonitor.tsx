@@ -39,6 +39,7 @@ const generateChartData = function (data: HeartRateData[]) {
 interface Props {
     patient_id: string;
     parameter: string;
+    trigger: any;
 
 }
 
@@ -66,7 +67,7 @@ export const ParameterMonitor = (props: Props) => {
                 })
                 .catch(error => console.error(error));
         }
-        , []);
+        , [props.trigger]);
 
     const options = {}
 
