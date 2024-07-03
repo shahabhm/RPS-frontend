@@ -51,6 +51,11 @@ export default function SimpleMap() {
         });
     }, []);
 
+    const onMapClick = (e) => {
+        console.log(e)
+        setUserLocation({lat: e.lat, lng: e.lng});
+    }
+
 
     function handleSearchClick(event) {
         setSearchVal(event.target.value)
@@ -84,6 +89,7 @@ export default function SimpleMap() {
                     bootstrapURLKeys={{key: ""}}
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
+                    onClick={onMapClick}
                 >
                     {filteredLocations.map(location => <Pinpoint
                             lat={location.lat}
@@ -113,6 +119,7 @@ export default function SimpleMap() {
                     }}>Search
                     </button>
                 </div>
+                <p>{userLocation?.lat}, {userLocation?.lng}</p>
                 <ul className={"list-group"}>
                     {filteredLocations.map((location, index) => (
                         <li key={index} className="list-group-item d-flex align-items-center mb-3"
