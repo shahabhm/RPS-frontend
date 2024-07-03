@@ -18,11 +18,16 @@ const PatientNoteForm = (props: Props) => {
     }, [props.patient_id, trigger]);
     const handleSubmit = (event) => {
         event.preventDefault();
-        postRequest('add_notes', {
-            patient_id: props.patient_id,
-            note_title: noteTitle,
-            note: note
-        });
+        const formData = new FormData();
+        formData.append('image', selectedImage);
+        formData.append('patient_id', props.patient_id);
+        formData.append('note_title', noteTitle);
+        formData.append('note', note);
+        fetch('http://localhost:3000/add_notes', {
+            method: 'POST',
+            body: formData
+        }).then(() => {
+        }).catch(error => console.error(error));
         setTimeout(() => setTrigger(t => !t), 200);
     };
 
@@ -36,7 +41,7 @@ const PatientNoteForm = (props: Props) => {
                                                                               created_at={note.created_at} index={index}
                                                                               setParentTrigger={setTrigger}
                                                                               sender_name={note.sender_name}
-                                                                              title={note.note_title}/>)
+                                                                              title={note.note_title} image={note.image}/>)
                         }
                     </Accordion> :
                     <div className="spinner-border text-primary" role="status">
@@ -45,7 +50,7 @@ const PatientNoteForm = (props: Props) => {
             </ul>
             <form encType="multipart/form-data" method="post" onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <h2 style={{ textAlign: 'center', color: '#3f51b5' }}>Patient Notes</h2>
+                    <h2 style={{textAlign: 'center', color: '#3f51b5'}}>Patient Notes</h2>
                     <input type="text" className="form-control" value={noteTitle}
                            onChange={e => setNoteTitle(e.target.value)} placeholder={"Enter subject"} required/>
                     <input type="text" className="form-control" value={note} onChange={e => setNote(e.target.value)}

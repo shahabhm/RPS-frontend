@@ -9,6 +9,7 @@ interface Props {
     created_at: string;
     setParentTrigger: any;
     index: number;
+    image: string;
 }
 
 function PatientNotesAccordion(props: Props) {
@@ -30,11 +31,13 @@ function PatientNotesAccordion(props: Props) {
                     <span>{props.title}</span>
                 </div>
                 <span>{new Date(props.created_at).toUTCString()}</span>
-                {isDoctor&& <button onClick={handleDelete} type="button" className="btn-close btn-danger"
-                         aria-label="Close"></button>}
+                {isDoctor && <button onClick={handleDelete} type="button" className="btn-close btn-danger"
+                                     aria-label="Close"></button>}
             </Accordion.Header>
             <Accordion.Body className="bg-light">
                 <p className="mb-0">{props.note}</p>
+                {props.image && <img src={`http://localhost:3000/uploads/${props.image}`}
+                                     style={{maxWidth: "500px", marginTop: "10px"}} alt="note_image"/>}
             </Accordion.Body>
         </Accordion.Item>
     );
