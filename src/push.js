@@ -1,10 +1,12 @@
-const publicVapidKey = "BDOLcqQ0rm4DNNyx-L8glLEqWkpnIsgzFkpVaJGABBEYmFR9qhdW6Wc9hyQGiyVBa1MUsqwyNAdcBEln0iVObOE";
+import {postRequest} from "./requests.js";
 
-if ("serviceWorker" in navigator) {
-    send().catch((err) => console.error(err));
-} else {
-    console.error("Service workers are not supported in this browser");
-}
+const publicVapidKey = "BDOLcqQ0rm4DNNyx-L8glLEqWkpnIsgzFkpVaJGABBEYmFR9qhdW6Wc9hyQGiyVBa1MUsqwyNAdcBEln0iVObOE";
+//
+// if ("serviceWorker" in navigator) {
+//     send().catch((err) => console.error(err));
+// } else {
+//     console.error("Service workers are not supported in this browser");
+// }
 
 export async function send() {
     console.log("Registering service worker...");
@@ -21,13 +23,7 @@ export async function send() {
     console.log("Push Registered...");
 
     console.log("Sending Push...");
-    await fetch("http://localhost:3000/subscribe", {
-        method: "POST",
-        body: JSON.stringify(subscription),
-        headers: {
-            "content-type": "application/json",
-        },
-    });
+    await postRequest('subscribe', subscription);
     console.log("Push Sent...");
 }
 
