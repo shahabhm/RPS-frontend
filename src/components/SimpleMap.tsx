@@ -3,21 +3,54 @@ import GoogleMapReact from 'google-map-react';
 import {GeoAltFill} from 'react-bootstrap-icons';
 import {postRequest} from "../requests";
 
-const AnyReactComponent = ({name}) => <div><GeoAltFill style={{zoom: "200%", color: "red"}}/><p
+const Pinpoint = ({name, color}) => <div><GeoAltFill style={{zoom: "200%", color: color || "red"}}/><p
     style={{color: "white"}}>{name}</p></div>;
 
 export default function SimpleMap() {
     const [locations, setLocations] = useState([]);
     const [filteredLocations, setFilteredLocations] = useState([]);
     const [searchVal, setSearchVal] = useState("");
+    const [userLocation, setUserLocation] = useState(null);
+
+    function haversineDistance(lat1, lon1, lat2, lon2) {
+        function toRad(x) {
+            return x * Math.PI / 180;
+        }
+
+        const R = 6371; // km
+
+        const x1 = lat2 - lat1;
+        const dLat = toRad(x1);
+        const x2 = lon2 - lon1;
+        const dLon = toRad(x2)
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c;
+        return d;
+    }
 
     useEffect(() => {
         postRequest('get_hospitals').then(json => {
-            console.log('locations: ', json);
-            setLocations(json);
-            setFilteredLocations(json)
+            const sortedLocations = json.sort((a, b) => {
+                return haversineDistance(userLocation.lat, userLocation.lng, a.lat, a.lng) - haversineDistance(userLocation.lat, userLocation.lng, b.lat, b.lng)
+            })
+            setLocations(sortedLocations);
+            setFilteredLocations(sortedLocations);
         }).catch(error => console.error(error));
+    }, [userLocation]);
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(function (location) {
+            setUserLocation({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
+            });
+
+        });
     }, []);
+
 
     function handleSearchClick(event) {
         setSearchVal(event.target.value)
@@ -52,12 +85,13 @@ export default function SimpleMap() {
                     defaultCenter={defaultProps.center}
                     defaultZoom={defaultProps.zoom}
                 >
-                    {filteredLocations.map(location => <AnyReactComponent
+                    {filteredLocations.map(location => <Pinpoint
                             lat={location.lat}
                             lng={location.lng}
                             name={location.name}
                         />
                     )}
+                    <Pinpoint lat={userLocation?.lat} lng={userLocation?.lng} name={"You"} color={"green"}/>
                 </GoogleMapReact>
             </div>
             <div style={{margin: '0 auto', maxWidth: '800px'}}>
@@ -91,6 +125,9 @@ export default function SimpleMap() {
                                        style={{textDecoration: 'none', color: '#3f51b5'}}>{location.name}</a>
                                 </h5>
                                 <a href={location.website} target={"_blank"}>وبسایت بیمارستان</a>
+                                <p>فاصله: {
+                                    userLocation ? haversineDistance(userLocation.lat, userLocation.lng, location.lat, location.lng).toFixed(2) : "unknown"
+                                }</p>
                             </div>
                         </li>
                     ))}
