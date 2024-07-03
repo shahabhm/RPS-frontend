@@ -12,6 +12,8 @@ export const Prescription = (props: Props) => {
 
     const [prescriptions, setPrescriptions] = useState([]);
     const [newPrescriptions, setNewPrescriptions] = useState([]);
+    const [dosage, setDosage] = useState('');
+    const [amount, setAmount] = useState('');
     const [trigger, setTrigger] = useState(false);
     useEffect(() => {
         postRequest('get_prescriptions', {patient_id: props.patient_id}).then(json => setPrescriptions(json)).catch(error => console.error(error));
@@ -20,8 +22,13 @@ export const Prescription = (props: Props) => {
         event.preventDefault();
         postRequest('add_prescription', {
             patient_id: props.patient_id,
-            prescriptions: newPrescriptions
+            prescriptions: newPrescriptions,
+            dosage: dosage,
+            amount: amount
         });
+        setAmount('');
+        setDosage('');
+        setNewPrescriptions(_ => []);
         setTimeout(() => setTrigger(!trigger), 100);
     };
 
@@ -36,7 +43,7 @@ export const Prescription = (props: Props) => {
                                                                                      prescription={entry.prescription}
                                                                                      parentTrigger={setTrigger}
                                                                                      index={index}
-                                                                                     />
+                            />
                             </li>)
                         }</ul>
                         :
@@ -46,8 +53,13 @@ export const Prescription = (props: Props) => {
                 </div>
             </div>
             {
-                isDoctor && <form onSubmit={handleSubmit} >
-                    <SearchableDropdown setSelectedConditions={setNewPrescriptions} endpoint={'get_meds_names'}/>
+                isDoctor && <form onSubmit={handleSubmit}>
+                    <SearchableDropdown isSingle={true} setSelectedConditions={setNewPrescriptions}
+                                        endpoint={'get_meds_names'}/>
+                    <input placeholder="enter dosage" value={dosage} onChange={(e) => setDosage(e.target.value)} type="text"
+                           className="form-control" required/>
+                    <input placeholder="enter amount" value={amount} onChange={(e) => setAmount(e.target.value)}
+                           type="number" className="form-control" required/>
                     <button type="submit" className="btn btn-primary" style={{margin: "20px 0px"}}>Submit</button>
                 </form>
             }
